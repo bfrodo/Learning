@@ -1,3 +1,4 @@
+import matplotlib
 import numpy as np
 import pandas as pd
 
@@ -72,6 +73,42 @@ def answer_five():
 answer_five()
 
 def answer_six():
-    Top15 = answer_one()
-    return "ANSWER"
+    q6country = q1df['% Renewable'].idxmax()
+    q6df = q1df.loc[[q6country]]
+    q6df = q6df['% Renewable']
+    q6df = q6df.reset_index()
+    return print(tuple(q6df.iloc[0]))
 answer_six()
+
+def answer_seven():
+    q1df['citations ratio'] = q1df['Self-citations'] / q1df['Citations']
+    q7country = q1df['citations ratio'].idxmax()
+    q7df = q1df.loc[[q7country]]
+    q7df = q7df['citations ratio']
+    q7df = q7df.reset_index()
+    return print(tuple(q7df.iloc[0]))
+answer_seven()
+
+def answer_eight():
+    q1df['est pop'] = q1df['Energy Supply'] / q1df['Energy Supply per Capita']
+    q8df = q1df.sort_values('est pop', ascending=False)
+    q8df = q8df.iloc[[2]]
+    return print(str(q8df.head().index[0]))
+answer_eight()
+
+def answer_nine():
+    q1df['est cit per cap'] = q1df['est pop'] / q1df['Citations']
+    return print(q1df['est cit per cap'].corr(q1df['Energy Supply per Capita']))
+answer_nine()
+
+
+def plot9():
+    import matplotlib as plt
+   # %matplotlib inline
+
+    Top15 = answer_one()
+    Top15['PopEst'] = Top15['Energy Supply'] / Top15['Energy Supply per Capita']
+    Top15['Citable docs per Capita'] = Top15['Citable documents'] / Top15['PopEst']
+    Top15.plot(x='Citable docs per Capita', y='Energy Supply per Capita', kind='scatter', xlim=[0, 0.0006])
+    plt.show()
+plot9()
