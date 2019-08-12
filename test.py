@@ -47,18 +47,15 @@ newdf = newdf.drop(['Country Code', 'Indicator Name', 'Indicator Code'], axis=1)
 
 def answer_one():
     return print(q1df)
-answer_one()
 
 def answer_two():
     return print(len(newdf.index) - len(q1df.index))
-answer_two()
 
 def answer_three():
     col = q1df.loc[:,'2006':'2015']
     q1df['Average'] = col.mean(axis=1)
     avgGDP = q1df['Average']
     return print(avgGDP.sort_values(ascending=False))
-answer_three()
 
 def answer_four():
     avgGDP = q1df.sort_values('Average', ascending=False)
@@ -66,11 +63,9 @@ def answer_four():
     max = avgsix.loc[:,'2006':'2015'].max(axis=1)
     min = avgsix.loc[:,'2006':'2015'].min(axis=1)
     return print(int(max-min))
-answer_four()
 
 def answer_five():
     return print(q1df['Energy Supply per Capita'].mean())
-answer_five()
 
 def answer_six():
     q6country = q1df['% Renewable'].idxmax()
@@ -78,7 +73,6 @@ def answer_six():
     q6df = q6df['% Renewable']
     q6df = q6df.reset_index()
     return print(tuple(q6df.iloc[0]))
-answer_six()
 
 def answer_seven():
     q1df['citations ratio'] = q1df['Self-citations'] / q1df['Citations']
@@ -87,22 +81,19 @@ def answer_seven():
     q7df = q7df['citations ratio']
     q7df = q7df.reset_index()
     return print(tuple(q7df.iloc[0]))
-answer_seven()
 
 def answer_eight():
     q1df['est pop'] = q1df['Energy Supply'] / q1df['Energy Supply per Capita']
     q8df = q1df.sort_values('est pop', ascending=False)
     q8df = q8df.iloc[[2]]
     return print(str(q8df.head().index[0]))
-answer_eight()
 
 def answer_nine():
     q1df['est cit per cap'] = q1df['est pop'] / q1df['Citations']
     return print(q1df['est cit per cap'].corr(q1df['Energy Supply per Capita']))
-answer_nine()
 
 
-def plot9():
+'''def plot9():
     import matplotlib as plt
    # %matplotlib inline
 
@@ -111,4 +102,14 @@ def plot9():
     Top15['Citable docs per Capita'] = Top15['Citable documents'] / Top15['PopEst']
     Top15.plot(x='Citable docs per Capita', y='Energy Supply per Capita', kind='scatter', xlim=[0, 0.0006])
     plt.show()
-plot9()
+plot9()'''
+
+def answer_ten():
+    q1df['renewbool'] = q1df['% Renewable'] >= q1df['% Renewable'].median(axis=0)
+    HighRenew = q1df[q1df['renewbool'] == 1]
+    HighRenew = HighRenew.sort_values('Rank', ascending=True)
+    return HighRenew.iloc[:,0]
+
+def answer_eleven():
+    Top15 = answer_one()
+    return "ANSWER"
