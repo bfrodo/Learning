@@ -1,4 +1,3 @@
-import matplotlib
 import numpy as np
 import pandas as pd
 
@@ -95,14 +94,13 @@ def answer_nine():
 
 '''def plot9():
     import matplotlib as plt
-   # %matplotlib inline
+    #get_ipython().magic('matplotlib inline')
 
-    Top15 = answer_one()
-    Top15['PopEst'] = Top15['Energy Supply'] / Top15['Energy Supply per Capita']
-    Top15['Citable docs per Capita'] = Top15['Citable documents'] / Top15['PopEst']
-    Top15.plot(x='Citable docs per Capita', y='Energy Supply per Capita', kind='scatter', xlim=[0, 0.0006])
-    plt.show()
-plot9()'''
+    q1df = answer_one()
+    q1df['PopEst'] = q1df['Energy Supply'] / q1df['Energy Supply per Capita']
+    q1df['Citable docs per Capita'] = q1df['Citable documents'] / q1df['PopEst']
+    q1df.plot(x='Citable docs per Capita', y='Energy Supply per Capita', kind='scatter', xlim=[0, 0.0006])'''
+
 
 def answer_ten():
     q1df['renewbool'] = q1df['% Renewable'] >= q1df['% Renewable'].median(axis=0)
@@ -111,5 +109,29 @@ def answer_ten():
     return HighRenew.iloc[:,0]
 
 def answer_eleven():
-    Top15 = answer_one()
-    return "ANSWER"
+    q1df['est pop'] = q1df['Energy Supply'] / q1df['Energy Supply per Capita']
+    ContinentDict = {'China': 'Asia',
+                     'United States': 'North America',
+                     'Japan': 'Asia',
+                     'United Kingdom': 'Europe',
+                     'Russian Federation': 'Europe',
+                     'Canada': 'North America',
+                     'Germany': 'Europe',
+                     'India': 'Asia',
+                     'France': 'Europe',
+                     'South Korea': 'Asia',
+                     'Italy': 'Europe',
+                     'Spain': 'Europe',
+                     'Iran': 'Asia',
+                     'Australia': 'Australia',
+                     'Brazil': 'South America'}
+    q1df['cont'] = q1df.index.map(ContinentDict)
+    return print(q1df.set_index('cont').groupby(level=0)['est pop'].agg({'size': np.alen,'sum': np.sum , 'mean':np.mean, 'std': np.std}))
+
+def answer_twelve():
+    q1df['cuts'] = pd.cut(q1df['% Renewable'],5)
+    return print(q1df.groupby(['cont', 'cuts']).size())
+
+def answer_thirteen():
+    q1df['est pop'] = q1df['Energy Supply'] / q1df['Energy Supply per Capita']
+    return print(q1df['est pop'].map('{:,}'.format))
